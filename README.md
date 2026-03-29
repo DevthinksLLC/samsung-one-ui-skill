@@ -26,14 +26,20 @@ skills/
 
 ## Install with skills CLI
 
-After pushing this repo to GitHub, replace `OWNER/REPO` below with your actual repository path:
+Install directly from GitHub:
 
 ```bash
-npx skills add OWNER/REPO --list
-npx skills add OWNER/REPO --skill samsung-one-ui
+npx skills add https://github.com/DevthinksLLC/samsung-one-ui-skill --list
+npx skills add https://github.com/DevthinksLLC/samsung-one-ui-skill --skill samsung-one-ui
 ```
 
-You can also test the repository locally before pushing:
+Compact form:
+
+```bash
+npx skills add DevthinksLLC/samsung-one-ui-skill@samsung-one-ui
+```
+
+You can also test the repository locally:
 
 ```bash
 npx skills add . --list
