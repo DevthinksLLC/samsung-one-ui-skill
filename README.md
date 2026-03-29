@@ -50,5 +50,5 @@ npx skills add . --skill samsung-one-ui
 
 - The installable skill lives in [skills/samsung-one-ui](skills/samsung-one-ui).
 - `SKILL.md` contains the activation instructions.
-- `references/one-ui-guide.md` contains the distilled guidance derived from Samsung's official One UI design document.
+- `references/one-ui-guide.md` contains the distilled guidance, page map, and audit checklist derived from Samsung's official One UI design document.
 - `agents/openai.yaml` provides optional UI metadata for compatible tools.

@@ -7,19 +7,43 @@ Curated by Devthinks ([devthinks.com](https://devthinks.com)) for reusable agent
 
 Use this file when a request needs Samsung-specific layout, component, motion, or accessibility decisions. Keep outputs paraphrased.
 
-## Core intent
+## Table of contents
+
+- How to use this reference
+- Architecture
+- Components
+- Visual design
+- Motion and interaction
+- Accessibility
+- Quick audit checklist
+- Section map
+
+## How to use this reference
+
+- Start with Architecture for any redesign or audit.
+- Read only the component sections that match the screen you are working on.
+- Use the Quick audit checklist for fast reviews.
+- Use the Section map when you need to jump back into the source PDF for a specific area.
+
+## Architecture (guide pages 6-14)
+
+### Core intent
 
 - Create a UX that feels consistent with other Samsung mobile apps and devices.
 - Reduce learning cost across phones, tablets, foldables, and DeX.
 - Make important content easy to see and frequent actions easy to reach.
-
-## Architecture
 
 ### Viewing and interaction areas
 
 - Divide phone screens into a top viewing area and a bottom interaction area.
 - Put titles and passive content higher on the screen.
 - Put frequent actions, tabs, and action-required dialogs lower on the screen.
+
+### Screen depth and hierarchy
+
+- First-depth browsable screens are allowed to feel larger and more spacious, especially when they benefit from an expanded app bar.
+- Second-depth and later screens should usually be more compact and more task-focused.
+- When in doubt, make deeper screens denser and clearer rather than more decorative.
 
 ### Focus blocks
 
@@ -30,8 +54,11 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 ### Themes and dark mode
 
 - Support both a default theme and dark mode.
+- Lighter default backgrounds can improve general legibility by reducing overall contrast fatigue.
 - In dark mode, keep the whole screen darker, including focus blocks, dialogs, and controls.
+- In Samsung's examples, very dark or black backgrounds can visually merge with a black bezel and make content feel more immersive.
 - Dark themes should reduce glare and work comfortably at night.
+- Let the user switch to dark mode at their preferred or scheduled time.
 
 ### Responsive behavior
 
@@ -48,43 +75,73 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 
 - Expect user-controlled font size changes, zoom, resolution changes, and home screen density changes.
 - Do not rely on a layout that only works at one scale.
+- Test whether labels, tabs, and action buttons remain intelligible when font size or zoom changes.
+- When text gets longer because of localization or font settings, demote lower-priority actions into overflow rather than breaking the hierarchy.
 
-## Components
+### Architecture heuristics
+
+- If important content feels lost, add focus blocks before adding more color or chrome.
+- If the screen demands repeated reaches to the upper corners on a phone, the interaction area is probably too high.
+- If a tablet or foldable layout still looks like a stretched phone, add density and consider multi-layer structure.
+
+## Components (guide pages 16-56)
 
 ### App bar
 
 - Use the app bar to communicate screen context and expose actions.
+- The title can act as an app title, page title, or page filter.
 - Prefer icon actions.
 - Keep app bar actions to three or fewer.
 - If no actions are available, show no actions.
 - Put lower-priority commands into more options.
+- If the title is too long, far-right actions can move into overflow to preserve the title.
+- Show or hide actions as needed for language and font settings, but keep the same priority rules.
+- Use text buttons only when iconography would be unclear.
+- A spinner shows the current selected value and opens an anchored dropdown of options.
 
 ### Expandable app bar
 
 - Use on list or grid screens where a larger first-depth header improves context.
-- Allow it to expand and collapse between discrete states.
+- It has only two states: expanded and collapsed, with no intermediate resting state.
 - It works well with tabs, search, and scrollable content.
 - On later-depth screens, default to collapsed but allow expansion when the view supports it.
+- On first main screens, showing the expanded app bar by default is often appropriate.
 - Do not use it on keyboard-heavy screens except for simple input.
 - Avoid it when media or user content may be cropped.
+- Avoid it on screens that need to be filled entirely by controllers or additional vertically scrolling elements.
 - Full-screen landscape phone layouts do not support the expandable app bar.
+- In multi-window, foldable, and DeX layouts, landscape support is allowed when the window height exceeds 580dp.
+- If the user scrolls upward while expanded, collapse the app bar; if they scroll downward while collapsed, expand it.
+- When the finger lifts mid-gesture, snap to expanded or collapsed based on whether the threshold was crossed.
+- If search is essential, the search bar can live in the expandable area, hide while scrolling, and reappear afterward.
 
 ### Bottom bar
 
 - Use for high-priority actions.
 - Allow up to five actions.
 - Use icons, text, or a mix of both.
+- The bar can appear or hide while scrolling depending on how much space the content needs.
 - Do not add overflow menus here.
 - Do not make bottom-bar actions horizontally scrollable.
+- Do not place the bar above the keyboard unless the actions are directly related to keyboard input, such as Cancel, Done, Save, or Next.
+- Treat the bottom bar as an action surface, not as navigation.
 
 ### Bottom navigation
 
 - Use bottom navigation to switch between primary sections.
 - Keep tabs visible even while content scrolls.
 - Each main tab should own its own view.
+- Prefer four or fewer main tabs; five is the upper limit.
+- Name the screen title the same as the corresponding bottom tab when possible.
+- Do not use overflow menus inside bottom navigation.
+- Do not let the user switch main tabs by swiping horizontally across the content body.
+- Do not place bottom navigation above the keyboard.
+- If the main tab already represents the app, you can use that name as the title and omit a separate app title.
 - Keep all bottom tabs visible on one screen at default font size whenever possible.
 - Use top subtabs for categories on the current screen.
 - Make subtabs scrollable when there are five or more.
+- Users can move between top subtabs by swiping horizontally in the content area.
+- If translated labels become long, abbreviate them for the bottom tab if necessary but keep the full title in the app bar and on larger surfaces.
 
 ### Buttons
 
@@ -106,6 +163,7 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - Do not use pop-ups for lightweight descriptions or trivial feedback.
 - Show important pop-ups whenever needed, not only once, except for legal notices.
 - Long-press contextual menus in list or grid views should be dropdown-style and titleless.
+- For tablet layouts, the guide shows narrower centered dialog widths than on phones.
 
 ### Lists
 
@@ -129,6 +187,7 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - Avoid covering the whole screen with progress pop-ups.
 - If an action leads to a destination page, load the page frame first and show progress inside the updating content.
 - If the action affects the current screen, show progress on the tapped button when possible.
+- Use the tapped action button itself as the progress container when that is the least disruptive option.
 
 ### First-time use
 
@@ -139,8 +198,11 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 ### Label toast
 
 - Use for icon-only or otherwise ambiguous controls that need clarification on tap-and-hold.
+- It can also be used for controls whose text must stay fixed because of space limits.
 - Dismiss after a short time or when the user touches elsewhere.
+- If the user taps outside the toast, execute the action for that touched area immediately.
 - Do not use if tap-and-hold already performs a more important app action.
+- Do not use it for indicators without actions or for ordinary text-only buttons.
 
 ### Action toast
 
@@ -148,11 +210,13 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - Let it disappear automatically like a toast.
 - Provide at most two actions.
 - Do not use actions like Dismiss, Close, Done, or OK as the main value.
+- Think of it as lighter and more transient than a snackbar.
 
 ### Navigation bar
 
 - Choose opaque, translucent, or transparent based on the app design.
 - Transparent and translucent navigation bars are not driven by theme or background in the same way as opaque bars.
+- In the guide's examples, the navigation bar stays black for 16:9 aspect-ratio cases.
 
 ### Edit mode
 
@@ -163,7 +227,9 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - On tablet portrait, let create and compose fill the screen.
 - On tablet landscape, present create and compose as centered overlay windows.
 - Tapping outside a tablet overlay should behave like Back.
+- Dim irrelevant areas behind the tablet overlay.
 - Keep edit and display layouts visually similar where practical.
+- In split view, keep the edit experience in edit view rather than inventing a different interaction model.
 
 ### Selection control
 
@@ -173,9 +239,11 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - Show the number of selected items in the app bar.
 - Use the app-bar checkbox or radio control for select all.
 - If select mode starts from long-press, wait until the finger lifts before showing the toolbar.
+- Hide the toolbar while the user is continuously selecting through scrolling, then show it again after the finger lifts.
+- Do not show the toolbar when no items are selected.
 - Keep list layout stable when search is used in select mode.
 
-## Visual design
+## Visual design (guide pages 58-66)
 
 ### Icons
 
@@ -189,7 +257,7 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 ### Color
 
 - Use a categorized palette so color changes propagate consistently across related UI elements.
-- The guide shows One UI blue as the primary accent family for many defaults.
+- The guide's example palette uses One UI blue as the primary accent family, including values such as `#0381fe` and darker or active variants for light and dark themes.
 - Apply color based on semantic meaning, not decoration alone.
 - Consider cross-cultural meaning when choosing colors for warning, safety, or status.
 
@@ -198,6 +266,7 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - Use title case for titles, subheaders, text-only buttons, and tabs.
 - The guide uses Roboto as the default typeface.
 - Design for scalable type rather than a fixed text size.
+- Avoid all-caps UI labels unless there is a very strong reason outside the guide.
 
 ### Thumbnail radius
 
@@ -205,7 +274,7 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - The guide shows radius values including 26dp, 20dp, and 12dp depending on grid and target.
 - Pick the radius that preserves a soft, consistent One UI feel for the screen density and component size.
 
-## Motion and interaction
+## Motion and interaction (guide pages 68-82)
 
 ### Intuitive
 
@@ -220,6 +289,7 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - Let app icons expand smoothly into app screens while preserving corner logic.
 - Make expandable app bars react directly to scroll movement.
 - Keep shared elements visible across transitions when possible.
+- When switching between apps or app states, continuity should feel preserved rather than reset.
 
 ### Tangible
 
@@ -227,14 +297,14 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 - Sliders can enlarge while touched for finer control.
 - Dragged content should feel stuck to the finger and reveal related context naturally.
 
-## Auditory design
+## Auditory design (guide pages 80-82)
 
 - Use sounds consistently so users learn their meaning.
 - Use positive sound feedback when a goal is completed.
 - Avoid repetitive sounds that become annoying.
 - If sound is important, consider visual or vibration reinforcement as well.
 
-## Accessibility
+## Accessibility (guide pages 84-92)
 
 ### Principles
 
@@ -263,23 +333,43 @@ Use this file when a request needs Samsung-specific layout, component, motion, o
 
 ### Accessibility checklist distilled from the guide
 
-- Provide alternate text for non-text content.
-- Keep voice guidance concise and specific.
-- Add distinct labels when similar controls would otherwise sound identical.
-- Expose state changes and dynamic updates to assistive tech.
-- Ensure focus order is sequential and intuitive.
-- Do not focus decorative elements.
-- Provide multiple notification channels, with at least two of screen, sound, and vibration.
-- Prevent typing errors where possible.
+- Provide alternate text for non-text content, including abbreviations, badges, emoji-like media, and charts or tables when selected.
+- Keep voice guidance concise, specific, and differentiated when similar controls appear on the same screen.
+- Expose ongoing work, changed state, and dynamically updated content to assistive technology.
+- Ensure focus order is sequential, intuitive, and grouped where it helps the user understand similar elements.
+- Do not focus decorative elements or irrelevant supporting imagery.
+- Help the user understand where focus currently is.
+- Prevent controls from hiding automatically when the user still needs them.
+- Provide an alternative to complex gestures such as drag.
+- Do not rely on shape, location, direction, color, or sound alone for instructions.
+- Provide notifications in at least two channels among screen, sound, and vibration.
+- Help prevent typing errors.
 - Avoid auto-playing background music.
-- Keep component placement consistent.
-- Provide subtitles, transcripts, or equivalent support for multimedia.
-- Give users control over time-limited or automatically changing content.
+- Ensure unintended transitions or events still make sense to the user.
+- Make components recognizable through assistive technologies.
+- Provide subtitles, transcripts, sign language, or equivalent support for multimedia when relevant.
+- Keep interface components placed consistently.
+- Give users control over time-limited content and automatically changing content.
 
-## Practical review heuristics
+## Quick audit checklist
 
-- If a phone screen forces repeated reaches to the upper corners, it is drifting away from One UI.
-- If a design uses many competing surfaces, reduce layers and use focus blocks instead.
-- If a loading flow blocks the whole screen without need, move progress inline.
-- If an action needs explanation, prefer contextual structure first and toast-based help second.
-- If accessibility depends on color, sound, or gesture alone, the design is incomplete.
+- Does the screen clearly separate viewing content from the touch-heavy interaction area?
+- Is the screen depth correct, with a larger entry experience and a more compact deeper-state experience?
+- Are the highest-priority actions close to the thumb on phones?
+- Are app bar actions limited, prioritized, and resilient to long text or localization?
+- Does the layout still work with dark mode, larger fonts, and different window sizes?
+- Are bottom tabs stable, visible, and able to fit at default font size?
+- Are progress states inline and minimally disruptive?
+- Are dialogs, toasts, and edit/select states using the Samsung-specific behavior rather than generic Android defaults?
+- Does the visual system feel soft and restrained instead of layered and noisy?
+- Can the screen be understood and operated without depending on color, sound, or precise gestures alone?
+
+## Section map
+
+- Overview: guide page 4
+- Architecture: guide pages 6-14
+- Components: guide pages 16-56
+- Visual design: guide pages 58-66
+- Motion and interaction: guide pages 68-79
+- Auditory design: guide pages 80-82
+- Accessibility: guide pages 84-92
