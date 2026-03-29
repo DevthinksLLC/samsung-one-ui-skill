@@ -1,0 +1,8 @@
+interface:
+  display_name: "Samsung One UI"
+  short_description: "Design Samsung-style mobile UX"
+  brand_color: "#0381FE"
+  default_prompt: "Use $samsung-one-ui to design or review this Android screen for Samsung One UI."
+
+policy:
+  allow_implicit_invocation: true
